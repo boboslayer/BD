@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>For You 🎀</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── CANVASES ── -->
+  <canvas id="cnf"></canvas>
+  <canvas id="htc" style="position:fixed;inset:0;z-index:500;pointer-events:none;display:none;
+    transition:opacity .6s ease, transform .8s cubic-bezier(.4,0,.2,1);"></canvas>
+
+  <!-- ── FLOATING BG HEARTS ── -->
+  <div class="bg-hearts" id="bgH"></div>
+
+  <!-- ── BIRTHDAY GREETING (slides in after tree animation) ── -->
+  <div id="bdayGreeting">
+    <span class="bday-kuromi">🖤</span>
+    <h1 class="bday-title">Happy Birthday!</h1>
+    <p class="bday-sub">🌸 My Love · My World · My Everything 🌸</p>
+    <p class="bday-msg">
+      Selamat ulang tahun, sayangku 🌸<br><br>
+      Every single day with you is the best day of my life.
+      You are my favorite person, my safe place, my biggest happiness. 💕<br><br>
+      I hope this year brings you everything you've ever dreamed of —
+      more laughter, more love, more beautiful moments. ✨<br><br>
+      Thank you for existing. Thank you for being mine.
+      I love you more than all the stars, forever and always. 🖤🎀
+    </p>
+    <div class="bday-emojis">
+      <span>🎂</span><span>🎀</span><span>💖</span><span>✨</span><span>🌸</span><span>💕</span>
+    </div>
+    <span class="bday-sig">From me, only for you 💕</span>
+    <button class="btn-pink" style="margin-top:24px;" onclick="goSlide(3)">open your gift 💕</button>
+  </div>
+
+  <!-- ── MUSIC BUTTON ── -->
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+  <!-- ════════════════════════════════════════
+       SLIDES WRAPPER
+  ════════════════════════════════════════ -->
+  <div class="slides-wrap" id="slidesWrap">
+
+    <!-- ── SLIDE 0 : PASSWORD ── -->
+    <div class="slide active" id="slide0">
+      <!-- Kuromi GIF — swap src for a different GIF if you like! -->
+      <img class="kuromi-gif"
+           src="https://media.tenor.com/FSkILJxlAFUAAAAM/kuromi-waiting-for-you.gif"
+           alt="Kuromi">
+
+      <div class="big-text">
+        Hi Sayang, ayo tebak<br>passwordnya,<br>I bet u knoww!! 🎀
+      </div>
+
+      <div class="pin-dots" id="pinDots">
+        <div class="dot" id="d0"></div>
+        <div class="dot" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+        <div class="dot" id="d4"></div>
+        <div class="dot" id="d5"></div>
+      </div>
+
+      <div class="numpad">
+        <button class="numpad-btn" onclick="pressNum('1')">1</button>
+        <button class="numpad-btn" onclick="pressNum('2')">2</button>
+        <button class="numpad-btn" onclick="pressNum('3')">3</button>
+        <button class="numpad-btn" onclick="pressNum('4')">4</button>
+        <button class="numpad-btn" onclick="pressNum('5')">5</button>
+        <button class="numpad-btn" onclick="pressNum('6')">6</button>
+        <button class="numpad-btn" onclick="pressNum('7')">7</button>
+        <button class="numpad-btn" onclick="pressNum('8')">8</button>
+        <button class="numpad-btn" onclick="pressNum('9')">9</button>
+        <button class="numpad-btn zero" onclick="pressNum('0')">0</button>
+        <button class="numpad-btn del"  onclick="pressDelete()">⌫</button>
+      </div>
+
+      <div class="wrong-msg" id="wrongMsg"></div>
+      <div class="clue-text">clue : your birthday 🌸</div>
+    </div>
+
+    <!-- ── SLIDE 1 : READY? ── -->
+    <div class="slide" id="slide1">
+      <!-- Kuromi dancing GIF -->
+      <img class="kuromi-gif dance"
+           src="https://media.tenor.com/xs51GcF_uGwAAAAj/kuromi-happy.gif"
+           alt="Kuromi dancing">
+
+      <div class="big-text">are you readyy to<br>open thisss? 🎀</div>
+
+      <div class="btn-row">
+        <button class="btn-pink"    onclick="goSlide(2)">yess 💕</button>
+        <button class="btn-outline" onclick="nooPressed()">noo</button>
+      </div>
+      <div class="clue-text" id="nooMsg" style="height:20px;"></div>
+    </div>
+
+    <!-- ── SLIDE 2 : BIRTHDAY CAKE ── -->
+    <div class="slide" id="slide2">
+      <div class="sub-text" style="margin-bottom:8px;">🎀 A surprise is waiting for you! 🎀</div>
+      <div class="cake-rings-wrap">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <span class="cake-big" id="cakeEm" onclick="blowCake()">🎂</span>
+      </div>
+
+      <div class="cake-reveal" id="cakeReveal">
+        <div class="sub-text" style="margin-top:18px;font-size:1.1rem;">🎉 Yayy!! Now open your gift! 🎉</div>
+        <button class="btn-pink" style="margin-top:14px;" onclick="goSlide(3)">open it 💕</button>
+      </div>
+    </div>
+
+    <!-- ── SLIDES 3…N : PHOTOS  (built by script.js) ── -->
+    <!-- ── SLIDE LAST : WISHES  (built by script.js) ── -->
+
+  </div><!-- end .slides-wrap -->
+
+  <!-- ── SPLIT LEFT PANEL (fades in after tree shifts right) ── -->
+  <div id="splitPanel">
+    <img class=""
+         src="https://media.tenor.com/FSkILJxlAFUAAAAM/kuromi-waiting-for-you.gif"
+         alt="Kuromi">
+    <h1 class="sp-title">Happy<br>Birthday!</h1>
+    <p class="sp-sub">🌸 My Love 🌸</p>
+    <p class="sp-msg">
+      Selamat ulang tahun, sayangku<br>
+      Every single day with you is the best day of my life.
+      You are my favorite person, my safe place, my biggest happiness. 💕<br>
+      I hope this year brings you everything you've ever dreamed of —
+      more laughter, more love, more beautiful moments. ✨<br><br>
+      Thank you for existing. Thank you for being mine.
+      I love you more than all the stars, forever and always. 🩶🎀
+    </p>
+    <span class="sp-sig">— I Love You! 🩶</span>
+  </div>
+
+  <!-- JavaScript (loaded last so DOM is ready) -->
+  <script src="script.js"></script>
+
+</body>
+</html>
